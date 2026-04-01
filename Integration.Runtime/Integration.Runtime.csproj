@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lib.ChatConsole\Lib.ChatConsole.csproj" />
-    <ProjectReference Include="..\scr\scr.csproj" />
+    <ProjectReference Include="..\Lib.Sampling\scr.csproj" />
   </ItemGroup>
 
 </Project>
