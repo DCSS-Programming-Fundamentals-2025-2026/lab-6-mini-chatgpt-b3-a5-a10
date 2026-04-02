@@ -8,15 +8,24 @@ public class NucleusSampler
     public int Sample(float[] probs, float temperature, float topP, Random? rng)
     {
         if (probs == null || probs.Length == 0)
+        {
             throw new ArgumentException("Probs cannot be null or empty.");
+        }
 
         if (temperature <= 0f)
+        {
             throw new ArgumentOutOfRangeException(nameof(temperature));
+        }
 
         if (topP <= 0f || topP > 1f)
+        {
             throw new ArgumentOutOfRangeException(nameof(topP), "TopP must be in range (0, 1].");
+        }
 
-        rng ??= new Random();
+        if (rng == null)
+        {
+            rng = new Random();
+        }
 
         float[] logits = TemperatureScaler.Scale(probs, temperature);
 
@@ -45,7 +54,9 @@ public class NucleusSampler
             cutoff++;
 
             if (cumulative >= topP)
+            {
                 break;
+            }
         }
 
         float[] nucleus = new float[cutoff];
@@ -71,13 +82,15 @@ public class NucleusSampler
             cumulativeProb += nucleus[i];
 
             if (r <= cumulativeProb)
+            {
                 return nucleusIndices[i];
+            }
         }
 
         return nucleusIndices[^1];
     }
 
-    public int Sample(float[] probs, float temperature, float topP, int seed)
+    public int SampleWithSeed(float[] probs, float temperature, float topP, int seed)
     {
         return Sample(probs, temperature, topP, new Random(seed));
     }
