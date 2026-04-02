@@ -8,10 +8,14 @@ public class Sampler : ISampler
     public int Sample(float[] probs, float temperature, int topK, Random? rng)
     {
         if (probs == null || probs.Length == 0)
+        {
             throw new ArgumentException("Probs cannot be null or empty.");
+        }
 
         if (rng == null)
+        {
             rng = new Random();
+        }
 
         float[] logits = TemperatureScaler.Scale(probs, temperature);
 
@@ -20,7 +24,9 @@ public class Sampler : ISampler
         float[] topKLogits = new float[topKIndices.Length];
 
         for (int i = 0; i < topKIndices.Length; i++)
+        {
             topKLogits[i] = logits[topKIndices[i]];
+        }
 
         float[] topKProbs = ProbabilityNormalizer.Normalize(topKLogits);
 
@@ -31,13 +37,15 @@ public class Sampler : ISampler
         {
             cumulative += topKProbs[i];
             if (r <= cumulative)
+            {
                 return topKIndices[i];
+            }
         }
 
         return topKIndices[^1];
     }
 
-    public int Sample(float[] probs, float temperature, int topK, int seed)
+    public int SampleWithSeed(float[] probs, float temperature, int topK, int seed)
     {
         return Sample(probs, temperature, topK, new Random(seed));
     }
