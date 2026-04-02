@@ -3,7 +3,6 @@ namespace Tests;
 using scr;
 using scr.Lib.Sampling.Processing;
 using scr.Processing;
-using NUnit.Framework;
 
 [TestFixture]
 public class SamplerTests
@@ -67,7 +66,7 @@ public class SamplerTests
         int topK = 3;
         int seed = 42; 
         
-        int result = sampler.Sample(probs, temp, topK, seed);
+        int result = sampler.SampleWithSeed(probs, temp, topK, seed);
         
         Assert.That(result, Is.EqualTo(1), "At normal temperatures, the algorithm should correctly handle a standard probability distribution.");
     }
@@ -81,7 +80,7 @@ public class SamplerTests
         int hugeTopK = 100;
         int seed = 100;
         
-        int result = sampler.Sample(probs, temp, hugeTopK, seed);
+        int result = sampler.SampleWithSeed(probs, temp, hugeTopK, seed);
         
         Assert.That(result, Is.GreaterThanOrEqualTo(0).And.LessThan(2), "The algorithm must work correctly even if TopK exceeds the size of the array.");
     }
@@ -95,7 +94,7 @@ public class SamplerTests
         int topK = 5;
         int seed = 99;
         
-        int result = sampler.Sample(probs, temp, topK, seed);
+        int result = sampler.SampleWithSeed(probs, temp, topK, seed);
         
         Assert.That(result, Is.EqualTo(0), "If the input array has only one element, the only possible index is 0.");
     }
@@ -113,8 +112,6 @@ public class SamplerTests
         Assert.That(result, Is.InRange(0, 1), 
             "If `null` is passed instead of `Random`, the algorithm should generate it on its own and function properly.");
     }
-
-
 
     [Test]
     public void Test7()
