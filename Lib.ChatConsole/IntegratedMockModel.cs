@@ -19,7 +19,7 @@ public class IntegratedMockModel : ITextGenerator
 
         if (seed.HasValue)
         {
-            selectedIndex = _sampler.Sample(_mockLogits, temperature, topk, seed.Value);
+            selectedIndex = _sampler.SampleWithSeed(_mockLogits, temperature, topk, seed.Value);
         }
         else
         {
